@@ -1,0 +1,12 @@
+{
+  "ID": "55D9F15C38EE400EA7E3DF57DA15BF55",
+  "ActionKeyword": "scoop",
+  "Name": "Flow Scoop",
+  "Description": "Scoop integration for Flow Launcher",
+  "Author": "Garulf",
+  "Version": "0.0.0",
+  "Language": "python",
+  "Website": "https://github.com/Garulf/flow-scoop",
+  "IcoPath": "icon.jpg",
+  "ExecuteFileName": "run.py"
+}
