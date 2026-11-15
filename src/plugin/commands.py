@@ -11,7 +11,8 @@ def scoop() -> Scoop:
 
 
 def search(query: str) -> List[Manifest]:
-    return scoop().search(query.replace("search", "").strip())[:SEARCH_LIMIT]
+    terms = query.split(" ", 1)[1] if " " in query else ""
+    return scoop().search(terms.strip())[:SEARCH_LIMIT]
 
 
 def app_list(query: str) -> List[Manifest]:

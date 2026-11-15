@@ -77,3 +77,8 @@ def test_query_through_the_plugin_dispatcher(scoop):
     response = asyncio.run(main.plugin._event_handler.trigger_event("query", "list"))
     assert [result["Title"] for result in response["Result"]] == ["git (2.47.1)", "7zip (24.09)"]
     assert response["Result"][0]["JsonRPCAction"]["Method"] == "Flow.Launcher.ShellRun"
+
+
+def test_search_keeps_search_inside_app_names(scoop, scoop_home):
+    (scoop_home / "buckets" / "main" / "bucket" / "elastic-agent.json").write_text('{"version": "8.16.0"}', encoding="utf-8")
+    assert [result.title for result in main.query("search elasticsearch")] == ["elasticsearch (8.16.0)"]
