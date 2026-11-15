@@ -6,14 +6,14 @@ from typing import Optional, Union
 class Manifest:
 
     def __init__(self, path: Union[str, Path]):
-        self._path = Path(path)
+        self.path = Path(path)
         self._data = None
 
     def __repr__(self) -> str:
         return f'<App {self.name}>'
 
     def _load(self):
-        with open(self._path, 'r', encoding='utf-8') as f:
+        with open(self.path, 'r', encoding='utf-8') as f:
             self._data = json.load(f)
 
     @property
@@ -24,9 +24,9 @@ class Manifest:
 
     @property
     def name(self) -> str:
-        if 'apps' in self._path.parts:
-            return self._path.parts[-3]
-        return self._path.stem
+        if 'apps' in self.path.parts:
+            return self.path.parts[-3]
+        return self.path.stem
 
     @property
     def description(self) -> str:
@@ -42,4 +42,4 @@ class Manifest:
 
     @property
     def is_installed(self) -> bool:
-        return self._path.stem == 'manifest'
+        return self.path.stem == 'manifest'

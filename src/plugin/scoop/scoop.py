@@ -1,7 +1,7 @@
 from __future__ import annotations
 import os
 import json
-from typing import List, Union
+from typing import List, Optional, Union
 from pathlib import Path
 
 from .cli import ScoopCLI
@@ -16,13 +16,13 @@ SCOOP_HOME = os.path.join(USER_HOME, 'scoop')
 
 class Scoop:
 
-    def __init__(self, home_dir: str = SCOOP_HOME):
+    def __init__(self, home_dir: str = SCOOP_HOME, cli: Optional[ScoopCLI] = None):
         self.home_dir = home_dir
-        self.cli = ScoopCLI()
+        self.cli = cli or ScoopCLI()
 
     def _get_local_buckets(self) -> List[Bucket]:
         buckets = []
-        for bucket in Path(SCOOP_HOME).glob('buckets/*'):
+        for bucket in Path(self.home_dir).glob('buckets/*'):
             buckets.append(Bucket(bucket))
         return buckets
 
@@ -60,7 +60,7 @@ class Scoop:
         if self.is_installed(app):
             raise Exception(f'{app} is already installed')
         if isinstance(app, Manifest):
-            app = str(app._path)
+            app = str(app.path)
         self.cli.install(app)
 
     def uninstall(self, app: Union[str, Manifest]) -> None:

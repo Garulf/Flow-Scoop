@@ -1,29 +1,26 @@
 from typing import List
-from pyflowlauncher import Plugin
-from pyflowlauncher.result import send_results
 
-from .commands import search, app_list
-from .results import menu_results, context_menu_results
+from pyflowlauncher import FlowLauncherV2, Plugin
 
-plugin = Plugin()
+from commands import app_list, search
+from results import context_menu_results, manifest_results, menu_results
+
+plugin = Plugin(launcher=FlowLauncherV2())
 
 COMMANDS = {
     "search": search,
-    "list": app_list
+    "list": app_list,
 }
-
-
-def menu(query: str):
-    return send_results(menu_results(COMMANDS))
 
 
 @plugin.on_method
 def query(query: str):
-    command = query.split(" ")[0]
-    return COMMANDS.get(command, menu)(query)
+    command = COMMANDS.get(query.split(" ")[0])
+    if command is None:
+        return menu_results(COMMANDS)
+    return manifest_results(command(query), plugin.launcher.icons)
 
 
 @plugin.on_method
 def context_menu(data: List):
-    results = context_menu_results(data[0])
-    return send_results(results)
+    return context_menu_results(data[0], plugin.launcher.icons)
