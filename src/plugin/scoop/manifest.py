@@ -37,7 +37,7 @@ class Manifest:
         return self._loaded_data['version']
 
     @property
-    def homepage(self) -> str:
+    def homepage(self) -> Optional[str]:
         return self._loaded_data.get('homepage')
 
     @property
