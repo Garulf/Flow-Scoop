@@ -1,8 +1,11 @@
 import json
+from pathlib import Path
 
 import pytest
+from pyflowlauncher.icons import Icons
 
 import commands
+import main
 from scoop.cli import ScoopCLI
 from scoop.scoop import Scoop
 
@@ -65,3 +68,8 @@ def scoop(scoop_home, runner, monkeypatch):
     fake = Scoop(str(scoop_home), ScoopCLI(runner))
     monkeypatch.setattr(commands, "scoop", lambda: fake)
     return fake
+
+
+@pytest.fixture(autouse=True)
+def flow_icons(monkeypatch):
+    monkeypatch.setattr(main.plugin.launcher, "icons", Icons(Path("/flow")))

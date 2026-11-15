@@ -1,4 +1,5 @@
 import asyncio
+from pathlib import Path
 
 import main
 
@@ -82,3 +83,15 @@ def test_query_through_the_plugin_dispatcher(scoop):
 def test_search_keeps_search_inside_app_names(scoop, scoop_home):
     (scoop_home / "buckets" / "main" / "bucket" / "elastic-agent.json").write_text('{"version": "8.16.0"}', encoding="utf-8")
     assert [result.title for result in main.query("search elasticsearch")] == ["elasticsearch (8.16.0)"]
+
+
+FLOW_IMAGES = {"Browser.png", "app.png", "cmd.png", "delete.png", "folder.png", "search.png", "update.png"}
+
+
+def test_icons_exist_in_flow_launcher(scoop, scoop_home):
+    installed = str(scoop_home / "apps" / "git" / "2.47.1" / "manifest.json")
+    available = str(scoop_home / "buckets" / "main" / "bucket" / "git.json")
+    results = [*main.query("search git"), *main.context_menu([installed]), *main.context_menu([available])]
+    for result in results:
+        icon = Path(result.icon)
+        assert icon == Path("icon.png") or (icon.parent == Path("/flow/Images") and icon.name in FLOW_IMAGES), result.title

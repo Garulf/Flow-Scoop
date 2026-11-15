@@ -18,7 +18,7 @@ def query(query: str):
     command = COMMANDS.get(query.split(" ")[0])
     if command is None:
         return menu_results(COMMANDS)
-    return manifest_results(command(query), plugin.launcher.icons)
+    return manifest_results(command(query))
 
 
 @plugin.on_method

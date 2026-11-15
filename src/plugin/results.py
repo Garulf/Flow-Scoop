@@ -15,7 +15,7 @@ def menu_results(commands: Iterable[str]) -> Iterator[Result]:
         yield Result(title=command, icon=PLUGIN_ICON)
 
 
-def manifest_results(manifests: Iterable[Manifest], icons: Icons) -> Iterator[Result]:
+def manifest_results(manifests: Iterable[Manifest]) -> Iterator[Result]:
     for manifest in manifests:
         try:
             title = f"{manifest.name} ({manifest.version})"
@@ -25,7 +25,7 @@ def manifest_results(manifests: Iterable[Manifest], icons: Icons) -> Iterator[Re
         yield Result(
             title=title,
             subtitle=description,
-            icon=getattr(icons, "2566"),
+            icon=PLUGIN_ICON,
             context_data=[str(manifest.path)],
         ).add_action(install_app(str(manifest.path)))
 
@@ -35,24 +35,24 @@ def context_menu_results(manifest_path: str, icons: Icons) -> Iterator[Result]:
     if manifest.is_installed:
         yield Result(
             title=f"Uninstall {manifest.name}",
-            icon=icons.checkupdate,
+            icon=icons.delete,
         ).add_action(uninstall_app(manifest.name))
         yield Result(
             title=f"Update {manifest.name}",
-            icon=icons.checkupdate,
+            icon=icons.update,
         ).add_action(update_app(manifest.name))
         yield Result(
             title="Reveal in Explorer",
-            icon=icons.explorer,
+            icon=icons.folder,
         ).add_action(open_directory(str(manifest.path.parent), str(manifest.path)))
     else:
         yield Result(
             title=f"Install {manifest.name}",
-            icon=icons.install,
+            icon=PLUGIN_ICON,
         ).add_action(install_app(str(manifest.path)))
     if manifest.homepage:
         yield Result(
             title="Open homepage",
             subtitle=manifest.homepage,
-            icon=icons.url,
+            icon=icons.Browser,
         ).add_action(open_url(manifest.homepage))
