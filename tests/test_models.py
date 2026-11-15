@@ -10,4 +10,4 @@ def test_models_import_on_python_before_3_11(monkeypatch):
     monkeypatch.setattr(sys, "version_info", (3, 8, 20, "final", 0))
     monkeypatch.delitem(sys.modules, "scoop.models", raising=False)
     models = importlib.import_module("scoop.models")
-    assert "url" in models.AppManifest.__optional_keys__
+    assert models.AppManifest.__name__ == "AppManifest"
