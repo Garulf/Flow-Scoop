@@ -160,3 +160,7 @@ cython_debug/
 #.idea/
 
 .vscode/
+
+# OS/NAS cruft
+Thumbs.db
+@eaDir/
