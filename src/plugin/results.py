@@ -3,6 +3,7 @@ from typing import Iterable, Iterator
 from pyflowlauncher import Result
 from pyflowlauncher.api import open_directory, open_url
 from pyflowlauncher.icons import Icons
+from pyflowlauncher.types import Method
 
 from actions import install_app, uninstall_app, update_app
 from scoop.manifest import Manifest
@@ -10,9 +11,11 @@ from scoop.manifest import Manifest
 PLUGIN_ICON = "icon.png"
 
 
-def menu_results(commands: Iterable[str]) -> Iterator[Result]:
+def menu_results(commands: Iterable[str], action_keyword: str, change_query: Method) -> Iterator[Result]:
     for command in commands:
-        yield Result(title=command, icon=PLUGIN_ICON)
+        query = " ".join(filter(None, [action_keyword, command])) + " "
+        yield Result(title=command, icon=PLUGIN_ICON).add_action(
+            change_query, [query], dont_hide_after_action=True)
 
 
 def manifest_results(manifests: Iterable[Manifest]) -> Iterator[Result]:

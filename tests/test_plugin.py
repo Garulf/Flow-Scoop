@@ -95,3 +95,23 @@ def test_icons_exist_in_flow_launcher(scoop, scoop_home):
     for result in results:
         icon = Path(result.icon)
         assert icon == Path("icon.png") or (icon.parent == Path("/flow/Images") and icon.name in FLOW_IMAGES), result.title
+
+
+def test_menu_entries_fill_in_the_command(monkeypatch):
+    monkeypatch.setattr(main.plugin.launcher, "action_keyword", "scoop")
+    results = list(main.query(""))
+    assert [result.json_rpc_action for result in results] == [
+        {"Method": "change_query", "Parameters": ["scoop search "], "DontHideAfterAction": True},
+        {"Method": "change_query", "Parameters": ["scoop list "], "DontHideAfterAction": True},
+    ]
+
+
+def test_change_query_keeps_the_window_open(monkeypatch):
+    sent = []
+
+    async def invoke(command):
+        sent.append(command)
+
+    monkeypatch.setattr(main.plugin.launcher.api, "invoke", invoke)
+    assert asyncio.run(main.change_query("scoop search ")) == {"hide": False}
+    assert sent == [{"Method": "Flow.Launcher.ChangeQuery", "Parameters": ["scoop search ", False]}]
