@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "simple",
+  "include-component-in-tag": false,
+  "always-update": true,
+  "bootstrap-sha": "13621311bbf2ebbc6837df579cfb6e51c78357fd",
+  "packages": {
+    ".": {
+      "package-name": "Flow-Scoop",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "data/plugin.json",
+          "jsonpath": "$.Version"
+        }
+      ]
+    }
+  }
+}

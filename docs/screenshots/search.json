@@ -1,0 +1,31 @@
+{
+  "keyword": "scoop",
+  "query": "search git",
+  "icon": "../../data/icon.png",
+  "max_results": 4,
+  "selection": 0,
+  "results": [
+    {
+      "title": "git (2.47.1)",
+      "subtitle": "Distributed version control system",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "git-lfs (3.6.0)",
+      "subtitle": "Git extension for versioning large files",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "gitui (0.26.3)",
+      "subtitle": "Blazing fast terminal UI for git",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "gitkraken (10.5.0)",
+      "subtitle": "Git GUI client",
+      "icon": "../../data/icon.png"
+    }
+  ],
+  "query_suggestion": "",
+  "show_caret": false
+}

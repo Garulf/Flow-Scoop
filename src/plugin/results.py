@@ -1,65 +1,61 @@
-from typing import Dict, Generator, List
+from typing import Iterable, Iterator
 
-from plugin.scoop.bucket import Manifest
-from pyflowlauncher.plugin import Method
-from pyflowlauncher.api import open_url, open_directory
-from pyflowlauncher.result import Result
-from pyflowlauncher.icons import ICONS
-from .actions import install_app, uninstall_app, update_app
+from pyflowlauncher import Result
+from pyflowlauncher.api import open_directory, open_url
+from pyflowlauncher.icons import Icons
+from pyflowlauncher.types import Method
+
+from actions import install_app, uninstall_app, update_app
+from scoop.manifest import Manifest
+
+PLUGIN_ICON = "icon.png"
 
 
-def menu_results(commands: Dict[str, Method]) -> Generator[Result, None, None]:
+def menu_results(commands: Iterable[str], action_keyword: str, change_query: Method) -> Iterator[Result]:
     for command in commands:
-        yield Result(
-            Title=command,
-            IcoPath="../icon.jpg",
-        )
+        query = " ".join(filter(None, [action_keyword, command])) + " "
+        yield Result(title=command, icon=PLUGIN_ICON).add_action(
+            change_query, [query], dont_hide_after_action=True)
 
 
-def manifest_results(manifests: List[Manifest]) -> Generator[Result, None, None]:
+def manifest_results(manifests: Iterable[Manifest]) -> Iterator[Result]:
     for manifest in manifests:
         try:
-            yield Result(
-                Title=f"{manifest.name} ({manifest.version})",
-                SubTitle=str(manifest.description),
-                IcoPath=ICONS["2566"],
-                JsonRPCAction=install_app(str(manifest._path)),
-                ContextData=[str(manifest._path)]
-            )
-        except Exception:
-            pass
+            title = f"{manifest.name} ({manifest.version})"
+            description = str(manifest.description)
+        except (OSError, ValueError, KeyError):
+            continue
+        yield Result(
+            title=title,
+            subtitle=description,
+            icon=PLUGIN_ICON,
+            context_data=[str(manifest.path)],
+        ).add_action(install_app(str(manifest.path)))
 
 
-def context_menu_results(manifest_path: str) -> Generator[Result, None, None]:
+def context_menu_results(manifest_path: str, icons: Icons) -> Iterator[Result]:
     manifest = Manifest(manifest_path)
-    is_installed = manifest.is_installed
-    if is_installed:
+    if manifest.is_installed:
         yield Result(
-            Title=f"Uninstall {manifest.name}",
-            IcoPath=ICONS["checkupdate"],
-            JsonRPCAction=uninstall_app(manifest.name),
-        )
+            title=f"Uninstall {manifest.name}",
+            icon=icons.delete,
+        ).add_action(uninstall_app(manifest.name))
         yield Result(
-            Title=f'Update {manifest.name}',
-            IcoPath=ICONS["checkupdate"],
-            JsonRPCAction=update_app(manifest.name),
-        )
+            title=f"Update {manifest.name}",
+            icon=icons.update,
+        ).add_action(update_app(manifest.name))
         yield Result(
-            Title='Reveal in Explorer',
-            IcoPath=ICONS["explorer"],
-            JsonRPCAction=open_directory(
-                str(manifest._path.parent), str(manifest._path)),
-        )
+            title="Reveal in Explorer",
+            icon=icons.folder,
+        ).add_action(open_directory(str(manifest.path.parent), str(manifest.path)))
     else:
         yield Result(
-            Title=f"Install {manifest.name}",
-            IcoPath=ICONS["install"],
-            JsonRPCAction=install_app(str(manifest._path)),
-        )
+            title=f"Install {manifest.name}",
+            icon=PLUGIN_ICON,
+        ).add_action(install_app(str(manifest.path)))
     if manifest.homepage:
         yield Result(
-            Title='Open homepage',
-            SubTitle=manifest.homepage,
-            IcoPath=ICONS["url"],
-            JsonRPCAction=open_url(manifest.homepage),
-        )
+            title="Open homepage",
+            subtitle=manifest.homepage,
+            icon=icons.Browser,
+        ).add_action(open_url(manifest.homepage))

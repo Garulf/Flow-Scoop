@@ -1,0 +1,31 @@
+{
+  "keyword": "scoop",
+  "query": "list",
+  "icon": "../../data/icon.png",
+  "max_results": 4,
+  "selection": 1,
+  "results": [
+    {
+      "title": "Uninstall git",
+      "subtitle": "",
+      "icon": "icons/delete.png"
+    },
+    {
+      "title": "Update git",
+      "subtitle": "",
+      "icon": "icons/update.png"
+    },
+    {
+      "title": "Reveal in Explorer",
+      "subtitle": "",
+      "icon": "icons/folder.png"
+    },
+    {
+      "title": "Open homepage",
+      "subtitle": "https://gitforwindows.org",
+      "icon": "icons/Browser.png"
+    }
+  ],
+  "query_suggestion": "",
+  "show_caret": false
+}

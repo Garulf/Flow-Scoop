@@ -1,13 +1,19 @@
-from plugin.results import manifest_results
-from pyflowlauncher import send_results
-from .scoop.scoop import Scoop
+from typing import List
+
+from scoop.manifest import Manifest
+from scoop.scoop import Scoop
+
+SEARCH_LIMIT = 25
 
 
-def search(query: str):
-    manifests = Scoop().search(query.replace("search", "").strip())[:25]
-    return send_results(manifest_results(manifests))
+def scoop() -> Scoop:
+    return Scoop()
 
 
-def app_list(query: str):
-    apps = Scoop().list()
-    return send_results(manifest_results(apps))
+def search(query: str) -> List[Manifest]:
+    terms = query.split(" ", 1)[1] if " " in query else ""
+    return scoop().search(terms.strip())[:SEARCH_LIMIT]
+
+
+def app_list(query: str) -> List[Manifest]:
+    return scoop().list()

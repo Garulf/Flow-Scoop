@@ -5,8 +5,8 @@
   "Description": "Scoop integration for Flow Launcher",
   "Author": "Garulf",
   "Version": "0.0.0",
-  "Language": "python",
+  "Language": "python_v2",
   "Website": "https://github.com/Garulf/flow-scoop",
-  "IcoPath": "icon.jpg",
+  "IcoPath": "icon.png",
   "ExecuteFileName": "run.py"
 }

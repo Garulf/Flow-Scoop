@@ -1,8 +1,16 @@
 import subprocess
-from typing import List, Optional
-
+from typing import Callable, List, Optional
 
 PATH = 'scoop'
+
+Runner = Callable[[List[str]], str]
+
+
+def run_scoop(cmd: List[str]) -> str:
+    proc = subprocess.Popen(
+        cmd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    out, err = proc.communicate()
+    return out.decode('utf-8').strip()
 
 
 class ScoopCLI:
@@ -12,12 +20,12 @@ class ScoopCLI:
     LIST = 'list'
     UPDATE = 'update'
 
-    def _cmd(self, cmd: List[str], path: str = PATH) -> str:
-        cmd = [path] + cmd
-        proc = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        out, err = proc.communicate()
-        return out.decode('utf-8').strip()
+    def __init__(self, runner: Runner = run_scoop, path: str = PATH):
+        self._runner = runner
+        self._path = path
+
+    def _cmd(self, cmd: List[str]) -> str:
+        return self._runner([self._path] + cmd)
 
     def search(self, query: str) -> str:
         return self._cmd([self.SEARCH, query])

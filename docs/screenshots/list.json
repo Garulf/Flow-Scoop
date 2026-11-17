@@ -1,0 +1,31 @@
+{
+  "keyword": "scoop",
+  "query": "list",
+  "icon": "../../data/icon.png",
+  "max_results": 4,
+  "selection": 1,
+  "results": [
+    {
+      "title": "7zip (24.09)",
+      "subtitle": "A multi-format file archiver with high compression ratios",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "git (2.47.1)",
+      "subtitle": "Distributed version control system",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "nodejs-lts (22.11.0)",
+      "subtitle": "JavaScript runtime environment. LTS version",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "python (3.13.0)",
+      "subtitle": "A programming language that lets you work quickly and integrate systems more effectively",
+      "icon": "../../data/icon.png"
+    }
+  ],
+  "query_suggestion": "",
+  "show_caret": false
+}
